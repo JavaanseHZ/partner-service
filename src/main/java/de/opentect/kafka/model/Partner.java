@@ -11,17 +11,17 @@ public class Partner {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
+    private String partnerUUID;
     private String firstName;
     private String lastName;
     private Date lastChanged;
 
-    public long getId() { return id;}
+    public String getPartnerUUID() { return partnerUUID; }
 
-    public void setId(long id) { this.id = id; }
+    public void setPartnerUUID(String partnerUUID) { this.partnerUUID = partnerUUID; }
 
-    public String getFirstName() {
-        return firstName;
-    }
+    public String getFirstName() { return firstName; }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -42,5 +42,7 @@ public class Partner {
     public void setLastChanged(Date lastChanged) {
         this.lastChanged = lastChanged;
     }
+
+
 }
 

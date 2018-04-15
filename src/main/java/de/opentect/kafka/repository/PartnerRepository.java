@@ -6,4 +6,5 @@ import java.util.Optional;
 
 public interface PartnerRepository extends JpaRepository<Partner, Long> {
     Optional<Partner> findByLastName(String lastName);
+    Optional<Partner> findByPartnerUUID(String partnerUUID);
 }
