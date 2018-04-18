@@ -4,10 +4,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-public class Partner {
+public class Partner implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -42,6 +43,7 @@ public class Partner {
         this.lastName = lastName;
     }
 
+
     public Date getLastChanged() {
         return lastChanged;
     }
@@ -49,7 +51,5 @@ public class Partner {
     public void setLastChanged(Date lastChanged) {
         this.lastChanged = lastChanged;
     }
-
-
 }
 
