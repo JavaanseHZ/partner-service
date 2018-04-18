@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -26,12 +25,6 @@ public class PartnerKafkaConsumer {
 
     @Autowired
     private PartnerRepository partnerRepository;
-
-
-//    PartnerKafkaConsumer(PartnerRepository partnerRepository) {
-//        this.partnerRepository = partnerRepository;
-//    }
-
 
     @KafkaListener(topics = "${kafka.message.topic}")
     public void receive(ConsumerRecord<String, Vertrag> consumerRecord) {
