@@ -3,8 +3,8 @@
     <con:settings/>
     <con:interface xsi:type="con:RestService" id="3e24d3b9-e78e-47d8-bf5d-0aac09a596c5" wadlVersion="http://wadl.dev.java.net/2009/02" name="http://localhost:8080" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
         <con:settings/>
-        <con:definitionCache/>
-        <con:endpoints>
+        
+        <con:definitionCache type="TEXT" rootPart=""/><con:endpoints>
             <con:endpoint>http://localhost:8080</con:endpoint>
         </con:endpoints>
         <con:resource name="save" path="/partner/save" id="bcc2010b-a976-4138-a712-1ac4455c3553">
@@ -51,9 +51,9 @@
                     <con:settings>
                         <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
                     </con:settings>
-                    <con:endpoint>http://localhost:8080</con:endpoint>
+                    <con:endpoint>http://localhost:8090</con:endpoint>
                     <con:request>{
-	"id":"3"
+	"id":"3",
 	"vorname":"Ben",
 	"nachname":"Vogler"
 }
@@ -119,10 +119,9 @@
                 </con:representation>
                 <con:request name="delete" id="8cdc2833-d757-4c69-a25e-edbdd594a60b" mediaType="application/json" postQueryString="false">
                     <con:settings>
-                        <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/>
-                        </con:setting>
+                        <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
                     </con:settings>
-                    <con:endpoint>http://localhost:8080</con:endpoint>
+                    <con:endpoint>http://localhost:8090</con:endpoint>
                     <con:request/>
                     <con:originalUri>http://localhost/partner</con:originalUri>
                     <con:credentials>

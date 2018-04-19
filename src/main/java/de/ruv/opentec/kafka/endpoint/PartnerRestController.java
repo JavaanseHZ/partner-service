@@ -1,6 +1,7 @@
 package de.ruv.opentec.kafka.endpoint;
 
 import de.ruv.opentec.kafka.model.Partner;
+import de.ruv.opentec.kafka.producer.PartnerSavedKafkaProducer;
 import de.ruv.opentec.kafka.repository.PartnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,8 @@ import java.util.List;
 public class PartnerRestController {
 
     private final PartnerRepository partnerRepository;
+    @Autowired
+    private PartnerSavedKafkaProducer partnerSavedKafkaProducer;
 
     @Autowired
     PartnerRestController(PartnerRepository partnerRepository) {
@@ -33,6 +36,7 @@ public class PartnerRestController {
     @PostMapping("/save")
     public Partner saveParter(@RequestBody Partner partner) {
         partnerRepository.save(partner);
+        partnerSavedKafkaProducer.sendEvent(partner.getId(), partner);
         return partner;
     }
 
