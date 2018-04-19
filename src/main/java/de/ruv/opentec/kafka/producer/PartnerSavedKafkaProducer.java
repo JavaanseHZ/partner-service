@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PartnerSavedKafkaProducer {
 
-    @Value("${kafka.message.topic}")
+    @Value("${kafka.message.topic.saved}")
     private String topic;
 
     @Autowired

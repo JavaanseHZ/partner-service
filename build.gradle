@@ -1,9 +1,11 @@
 buildscript {
     repositories {
         mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath('org.springframework.boot:spring-boot-gradle-plugin:2.0.1.RELEASE')
+        classpath('com.commercehub.gradle.plugin:gradle-avro-plugin:0.14.1')
     }
 }
 
@@ -11,6 +13,7 @@ apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'com.commercehub.gradle.plugin.avro'
 
 bootJar {
     baseName = 'partner-service'
@@ -19,6 +22,8 @@ bootJar {
 
 repositories {
     mavenCentral()
+    jcenter()
+    maven{ url = "http://packages.confluent.io/maven/"}
 }
 
 sourceCompatibility = 1.8
@@ -29,5 +34,12 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile('com.h2database:h2')
     compile('org.springframework.kafka:spring-kafka')
+    compile('org.apache.avro:avro:1.8.2')
+    compile('io.confluent:kafka-avro-serializer:4.1.0')
     testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+task generateAvro(type: com.commercehub.gradle.plugin.avro.GenerateAvroJavaTask) {
+    source("src/main/avro")
+    outputDir = file("src/main/avro")
 }

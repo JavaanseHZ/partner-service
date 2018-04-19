@@ -4,5 +4,9 @@ server:
 kafka:
     bootstrap:
         address: localhost:29092
+    schemaregistry:
+        address: http://localhost:8081
     message:
-        topic: partnerSaved
+        topic:
+            saved: partnerSaved
+            deleted: partnerDeleted

@@ -1,6 +1,8 @@
 package de.ruv.opentec.kafka.endpoint;
 
 import de.ruv.opentec.kafka.model.Partner;
+import de.ruv.opentec.kafka.model.PartnerDeleted;
+import de.ruv.opentec.kafka.producer.PartnerDeletedAvroKafkaProducer;
 import de.ruv.opentec.kafka.producer.PartnerSavedKafkaProducer;
 import de.ruv.opentec.kafka.repository.PartnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,10 @@ import java.util.List;
 public class PartnerRestController {
 
     private final PartnerRepository partnerRepository;
+
+    @Autowired
+    private PartnerDeletedAvroKafkaProducer partnerDeletedAvroKafkaProducer;
+
     @Autowired
     private PartnerSavedKafkaProducer partnerSavedKafkaProducer;
 
@@ -30,7 +36,11 @@ public class PartnerRestController {
 
     @DeleteMapping("/delete/{id}")
     public void deletePartner(@PathVariable long id) {
-        partnerRepository.delete(partnerRepository.findById(id).get());
+        Partner partner = partnerRepository.findById(id).get();
+        partnerRepository.delete(partner);
+        PartnerDeleted partnerDeleted = new PartnerDeleted(partner.getId(), partner.getVorname(), partner.getNachname());
+        partnerDeletedAvroKafkaProducer.sendEvent(partner.getId(), partnerDeleted);
+
     }
 
     @PostMapping("/save")
