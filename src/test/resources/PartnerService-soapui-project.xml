@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<con:soapui-project xmlns:con="http://eviware.com/soapui/config" id="86ccc557-a6c7-46ec-a15d-4e8106d17530" activeEnvironment="Default"
-                    name="PartnerService" resourceRoot="" soapui-version="5.4.0" abortOnError="false"
-                    runType="SEQUENTIAL">
+<con:soapui-project id="86ccc557-a6c7-46ec-a15d-4e8106d17530" activeEnvironment="Default" name="PartnerService" resourceRoot="" soapui-version="5.4.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config">
     <con:settings/>
-    <con:interface xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="con:RestService"
-                   id="3e24d3b9-e78e-47d8-bf5d-0aac09a596c5" wadlVersion="http://wadl.dev.java.net/2009/02" name="http://localhost:8080"
-                   type="rest">
+    <con:interface xsi:type="con:RestService" id="3e24d3b9-e78e-47d8-bf5d-0aac09a596c5" wadlVersion="http://wadl.dev.java.net/2009/02" name="http://localhost:8080" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
         <con:settings/>
         <con:definitionCache/>
         <con:endpoints>
@@ -23,7 +19,7 @@
                 </con:representation>
                 <con:representation type="FAULT">
                     <con:mediaType>application/json;charset=UTF-8</con:mediaType>
-                    <con:status>400 404</con:status>
+                    <con:status>400 404 500</con:status>
                     <con:params/>
                     <con:element xmlns:par="http://localhost/partner">par:Fault</con:element>
                 </con:representation>
@@ -51,18 +47,15 @@
                     <con:params/>
                     <con:element>data</con:element>
                 </con:representation>
-                <con:request name="Save" id="8cdc2833-d757-4c69-a25e-edbdd594a60b" mediaType="application/json"
-                             postQueryString="false">
+                <con:request name="Save" id="8cdc2833-d757-4c69-a25e-edbdd594a60b" mediaType="application/json" postQueryString="false">
                     <con:settings>
-                        <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/>
-                        </con:setting>
+                        <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
                     </con:settings>
                     <con:endpoint>http://localhost:8080</con:endpoint>
                     <con:request>{
-                        "firstName":"Ben",
-                        "lastName":"Vogler"
-
-                        }
+	"firstName":"Ben",
+	"lastName":"Vogler"
+}
                     </con:request>
                     <con:originalUri>http://localhost/partner</con:originalUri>
                     <con:credentials>
@@ -75,8 +68,7 @@
                 </con:request>
             </con:method>
         </con:resource>
-        <con:resource name="delete" path="/partner/delete/8a069990-864b-4e07-8479-cdcbe3c9dd3b"
-                      id="bcc2010b-a976-4138-a712-1ac4455c3553">
+        <con:resource name="delete" path="/partner/delete/8a069990-864b-4e07-8479-cdcbe3c9dd3b" id="bcc2010b-a976-4138-a712-1ac4455c3553">
             <con:settings/>
             <con:parameters/>
             <con:method name="Partner 1" id="84889590-d559-433e-b423-3dccd334743a" method="DELETE">
@@ -124,8 +116,7 @@
                     <con:params/>
                     <con:element>data</con:element>
                 </con:representation>
-                <con:request name="delete" id="8cdc2833-d757-4c69-a25e-edbdd594a60b" mediaType="application/json"
-                             postQueryString="false">
+                <con:request name="delete" id="8cdc2833-d757-4c69-a25e-edbdd594a60b" mediaType="application/json" postQueryString="false">
                     <con:settings>
                         <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/>
                         </con:setting>
@@ -181,13 +172,11 @@
                     <con:params/>
                     <con:element>Response</con:element>
                 </con:representation>
-                <con:request name="loadAll" id="8cdc2833-d757-4c69-a25e-edbdd594a60b" mediaType="application/json"
-                             postQueryString="false">
+                <con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:request name="loadAll" id="8cdc2833-d757-4c69-a25e-edbdd594a60b" mediaType="application/json" postQueryString="false">
                     <con:settings>
-                        <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/>
-                        </con:setting>
+                        <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
                     </con:settings>
-                    <con:endpoint>http://localhost:8080</con:endpoint>
+                    <con:endpoint>http://localhost:8090</con:endpoint>
                     <con:request/>
                     <con:originalUri>http://localhost/partner</con:originalUri>
                     <con:credentials>
