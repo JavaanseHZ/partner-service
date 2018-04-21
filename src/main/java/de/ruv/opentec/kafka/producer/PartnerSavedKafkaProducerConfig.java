@@ -1,6 +1,7 @@
 package de.ruv.opentec.kafka.producer;
 
 import de.ruv.opentec.kafka.model.Partner;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.LongSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,6 +33,10 @@ public class PartnerSavedKafkaProducerConfig {
         props.put(
                 ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
                 JsonSerializer.class);
+        props.put("producer.interceptor.classes",
+                "io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor");
+
+
         return new DefaultKafkaProducerFactory<>(props);
     }
 

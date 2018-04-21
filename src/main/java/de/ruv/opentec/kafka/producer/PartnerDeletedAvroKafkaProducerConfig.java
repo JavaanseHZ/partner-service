@@ -38,6 +38,9 @@ public class PartnerDeletedAvroKafkaProducerConfig {
                 ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
                 KafkaAvroSerializer.class);
         props.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, registryAddress);
+        props.put("producer.interceptor.classes",
+                "io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor");
+
         return new DefaultKafkaProducerFactory<>(props);
     }
 
