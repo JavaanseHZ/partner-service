@@ -15,7 +15,7 @@ public class PartnerSavedKafkaProducer {
     @Autowired
     private KafkaTemplate<Long, Partner> kafkaTemplate;
 
-    public void sendEvent(Long key, Partner vertrag) {
-        kafkaTemplate.send(topic, key, vertrag);
+    public void sendEvent(Long key, Partner partner) {
+        kafkaTemplate.send(topic, key, partner);
     }
 }
