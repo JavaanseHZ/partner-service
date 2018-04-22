@@ -47,7 +47,7 @@
                     <con:params/>
                     <con:element>data</con:element>
                 </con:representation>
-                <con:request name="Save" id="8cdc2833-d757-4c69-a25e-edbdd594a60b" mediaType="application/json" postQueryString="false">
+                <con:request name="save" id="8cdc2833-d757-4c69-a25e-edbdd594a60b" mediaType="application/json" postQueryString="false">
                     <con:settings>
                         <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
                     </con:settings>

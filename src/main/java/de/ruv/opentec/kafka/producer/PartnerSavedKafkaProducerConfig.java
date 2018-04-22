@@ -33,7 +33,7 @@ public class PartnerSavedKafkaProducerConfig {
         props.put(
                 ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
                 JsonSerializer.class);
-        props.put("producer.interceptor.classes",
+        props.put("interceptor.classes",
                 "io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor");
 
 

@@ -3,6 +3,7 @@ package de.ruv.opentec.kafka.producer;
 import de.ruv.opentec.kafka.model.PartnerDeleted;
 import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
+import io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.LongSerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -38,9 +39,8 @@ public class PartnerDeletedAvroKafkaProducerConfig {
                 ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
                 KafkaAvroSerializer.class);
         props.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, registryAddress);
-        props.put("producer.interceptor.classes",
+        props.put("interceptor.classes",
                 "io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor");
-
         return new DefaultKafkaProducerFactory<>(props);
     }
 
