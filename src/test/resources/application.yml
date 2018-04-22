@@ -1,0 +1,5 @@
+kafka:
+    bootstrap:
+        address: localhost:29092
+    message:
+        topic: partnerSaved
