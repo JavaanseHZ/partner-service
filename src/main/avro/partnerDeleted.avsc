@@ -1,0 +1,10 @@
+{
+  "namespace": "de.ruv.opentec.kafka.model",
+  "type": "record",
+  "name": "PartnerDeleted",
+  "fields": [
+    { "name": "id", "type": "long" },
+    { "name": "vorname", "type": "string" },
+    { "name": "nachname", "type": "string" }
+  ]
+}
