@@ -1,6 +1,8 @@
 package de.ruv.opentec.kafka.producer;
 
-import de.ruv.opentec.kafka.model.Partner;
+import de.ruv.opentec.kafka.model.PartnerCreated;
+import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
+import io.confluent.kafka.serializers.KafkaAvroSerializer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.LongSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,19 +11,21 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
-import org.springframework.kafka.support.serializer.JsonSerializer;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-public class PartnerSavedKafkaProducerConfig {
+public class PartnerCreatedAvroKafkaProducerConfig {
 
     @Value(value = "${kafka.bootstrap.address}")
     private String bootstrapAddress;
 
+    @Value(value = "${kafka.schemaregistry.address}")
+    private String registryAddress;
+
     @Bean
-    public ProducerFactory<Long, Partner> producerFactory() {
+    public ProducerFactory<Long, PartnerCreated> partnerCreatedProducerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(
                 ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
@@ -31,13 +35,16 @@ public class PartnerSavedKafkaProducerConfig {
                 LongSerializer.class);
         props.put(
                 ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
-                JsonSerializer.class);
-        return new DefaultKafkaProducerFactory<>(props);
+                KafkaAvroSerializer.class);
+        props.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, registryAddress);
+        DefaultKafkaProducerFactory<Long, PartnerCreated> producerFactory = new DefaultKafkaProducerFactory<>(props);
+        producerFactory.setTransactionIdPrefix("partnerCreated-");
+        return producerFactory;
     }
 
 
     @Bean
-    public KafkaTemplate<Long, Partner> kafkaTemplate() {
-        return new KafkaTemplate<>(producerFactory());
+    public KafkaTemplate<Long, PartnerCreated> kafkaTemplatePartnerCreated() {
+        return new KafkaTemplate<>(partnerCreatedProducerFactory());
     }
 }

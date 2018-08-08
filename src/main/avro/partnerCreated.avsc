@@ -1,0 +1,28 @@
+{
+  "namespace": "de.ruv.opentec.kafka.model",
+  "type": "record",
+  "name": "PartnerCreated",
+  "fields": [
+    { "name": "id", "type": "long" },
+    { "name": "name",
+      "type": ["null", {
+        "name": "Name",
+        "type": "record",
+        "fields": [
+          { "name": "firstname", "type": "string" },
+          { "name": "lastname", "type": "string" }
+        ]
+      }]
+    },
+    { "name": "address",
+      "type": ["null", {
+        "name": "Address",
+        "type": "record",
+        "fields": [
+          { "name": "street", "type": "string" },
+          { "name": "city", "type": "string" }
+        ]
+      }]
+    }
+  ]
+}

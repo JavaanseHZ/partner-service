@@ -4,7 +4,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath('org.springframework.boot:spring-boot-gradle-plugin:2.0.1.RELEASE')
+        classpath('org.springframework.boot:spring-boot-gradle-plugin:2.0.4.RELEASE')
         classpath('com.commercehub.gradle.plugin:gradle-avro-plugin:0.14.1')
     }
 }
@@ -35,7 +35,8 @@ dependencies {
     compile('com.h2database:h2')
     compile('org.springframework.kafka:spring-kafka')
     compile('org.apache.avro:avro:1.8.2')
-    compile('io.confluent:kafka-avro-serializer:4.1.0')
+    compile('org.apache.kafka:kafka-streams')
+    compile('io.confluent:kafka-avro-serializer:5.0.0')
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 

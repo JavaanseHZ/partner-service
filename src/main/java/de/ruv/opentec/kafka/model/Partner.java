@@ -10,8 +10,12 @@ public class Partner implements Serializable {
 
     @Id
     private long id;
-    private String vorname;
-    private String nachname;
+
+    private String firstname;
+    private String lastname;
+
+    private String street;
+    private String city;
 
     public long getId() {
         return id;
@@ -21,19 +25,35 @@ public class Partner implements Serializable {
         this.id = id;
     }
 
-    public String getVorname() {
-        return vorname;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setVorname(String vorname) {
-        this.vorname = vorname;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
-    public String getNachname() {
-        return nachname;
+    public String getLastname() {
+        return lastname;
     }
 
-    public void setNachname(String nachname) {
-        this.nachname = nachname;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }
