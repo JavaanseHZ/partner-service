@@ -2,7 +2,9 @@ package de.ruv.opentec.kafka.stream;
 
 import de.ruv.opentec.kafka.model.Address;
 import de.ruv.opentec.kafka.model.Name;
+import de.ruv.opentec.kafka.model.Partner;
 import de.ruv.opentec.kafka.model.PartnerCreated;
+import de.ruv.opentec.kafka.repository.PartnerRepository;
 import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
 import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
 import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde;
@@ -12,11 +14,9 @@ import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
-import org.apache.kafka.streams.kstream.KStream;
-import org.apache.kafka.streams.kstream.KTable;
-import org.apache.kafka.streams.kstream.TimeWindows;
-import org.apache.kafka.streams.kstream.Windowed;
+import org.apache.kafka.streams.kstream.*;
 import org.apache.kafka.streams.processor.WallclockTimestampExtractor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,20 +38,24 @@ public class KafkaStreamsConfiguration {
     @Value("${kafka.message.topic.created}")
     private String topic;
 
+    @Autowired
+    PartnerRepository partnerRepository;
+
     @Bean(name = KafkaStreamsDefaultConfiguration.DEFAULT_STREAMS_CONFIG_BEAN_NAME)
     public StreamsConfig kStreamsConfigs() {
-        final Properties streamsConfiguration = new Properties();
-        streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG,
-                "testStream");
-        streamsConfiguration.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-        streamsConfiguration.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG,
+        final Properties props = new Properties();
+        props.put(StreamsConfig.APPLICATION_ID_CONFIG,
+                "PartnerAggregationStream");
+        props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
+        props.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG,
                 registryAddress);
-        streamsConfiguration.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.Long().getClass().getName());
-        streamsConfiguration.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, SpecificAvroSerde.class);
-        streamsConfiguration.put(StreamsConfig.DEFAULT_TIMESTAMP_EXTRACTOR_CLASS_CONFIG, WallclockTimestampExtractor.class.getName());
-        streamsConfiguration.put(KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG, true);
-        streamsConfiguration.put(ConsumerConfig.ISOLATION_LEVEL_CONFIG, IsolationLevel.READ_COMMITTED.toString().toLowerCase(Locale.ROOT));
-        return new StreamsConfig(streamsConfiguration);
+        props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.Long().getClass().getName());
+        props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, SpecificAvroSerde.class);
+        props.put(StreamsConfig.DEFAULT_TIMESTAMP_EXTRACTOR_CLASS_CONFIG, WallclockTimestampExtractor.class.getName());
+        props.put(KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG, true);
+        props.put(ConsumerConfig.ISOLATION_LEVEL_CONFIG, IsolationLevel.READ_COMMITTED.toString().toLowerCase(Locale.ROOT));
+        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");
+        return new StreamsConfig(props);
     }
 
     @Bean
@@ -60,7 +64,7 @@ public class KafkaStreamsConfiguration {
 
         KTable<Windowed<Long>, PartnerCreated> aggregated = stream
                 .groupByKey()
-                .windowedBy(TimeWindows.of(TimeUnit.MINUTES.toMillis(1)))
+                .windowedBy(TimeWindows.of(TimeUnit.SECONDS.toMillis(1)))
                 .reduce(
                         (aggValue, newValue) -> {
                             if(aggValue.getAddress() == null && newValue.getAddress() != null) {
@@ -69,6 +73,7 @@ public class KafkaStreamsConfiguration {
                             if(aggValue.getName() == null && newValue.getName() != null) {
                                 aggValue.setName(newValue.getName());
                             }
+                            savePartner(aggValue);
                             return aggValue;
                         }
                 );
@@ -77,9 +82,17 @@ public class KafkaStreamsConfiguration {
                 .toStream()
                 .map((windowedKey, partner) -> new KeyValue<>(windowedKey.key(), partner))
                 .to("partnerAggregated");
-
-
         return stream;
+    }
+
+    private void savePartner(PartnerCreated partnerCreated) {
+        Partner partner = new Partner();
+        partner.setId(partnerCreated.getId());
+        partner.setFirstname(partnerCreated.getName().getFirstname());
+        partner.setLastname(partnerCreated.getName().getLastname());
+        partner.setStreet(partnerCreated.getAddress().getStreet());
+        partner.setCity(partnerCreated.getAddress().getCity());
+        partnerRepository.save(partner);
     }
 
 }
