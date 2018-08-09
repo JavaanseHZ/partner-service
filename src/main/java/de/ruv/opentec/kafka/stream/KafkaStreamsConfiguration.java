@@ -58,25 +58,23 @@ public class KafkaStreamsConfiguration {
     public KStream<Long, PartnerCreated> kStream(StreamsBuilder kStreamBuilder) {
         KStream<Long, PartnerCreated> stream = kStreamBuilder.stream(topic);
 
-        KTable<Windowed<Long>, PartnerCreated> aggregated = stream
-                .groupByKey()
-                .windowedBy(TimeWindows.of(TimeUnit.MINUTES.toMillis(1)))
-                .reduce(
-                        (aggValue, newValue) -> {
-                            if(aggValue.getAddress() == null && newValue.getAddress() != null) {
-                                aggValue.setAddress(newValue.getAddress());
-                            }
-                            if(aggValue.getName() == null && newValue.getName() != null) {
-                                aggValue.setName(newValue.getName());
-                            }
-                            return aggValue;
-                        }
-                );
-
-        aggregated
-                .toStream()
-                .map((windowedKey, partner) -> new KeyValue<>(windowedKey.key(), partner))
-                .to("partnerAggregated");
+        stream
+            .groupByKey()
+            .windowedBy(TimeWindows.of(TimeUnit.MINUTES.toMillis(1)))
+            .reduce(
+                (aggValue, newValue) -> {
+                    if(aggValue.getAddress() == null && newValue.getAddress() != null) {
+                        aggValue.setAddress(newValue.getAddress());
+                    }
+                    if(aggValue.getName() == null && newValue.getName() != null) {
+                        aggValue.setName(newValue.getName());
+                    }
+                    return aggValue;
+                }
+            )
+            .toStream()
+            .map((windowedKey, partner) -> new KeyValue<>(windowedKey.key(), partner))
+            .to("partnerAggregated");
 
         return stream;
     }
