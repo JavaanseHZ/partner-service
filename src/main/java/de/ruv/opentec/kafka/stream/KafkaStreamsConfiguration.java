@@ -63,8 +63,6 @@ public class KafkaStreamsConfiguration {
                 .windowedBy(TimeWindows.of(TimeUnit.MINUTES.toMillis(1)))
                 .reduce(
                         (aggValue, newValue) -> {
-                            Address address = aggValue.getAddress();
-                            Name name = aggValue.getName();
                             if(aggValue.getAddress() == null && newValue.getAddress() != null) {
                                 aggValue.setAddress(newValue.getAddress());
                             }
