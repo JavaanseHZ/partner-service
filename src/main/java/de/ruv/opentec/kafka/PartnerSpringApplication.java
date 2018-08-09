@@ -13,7 +13,7 @@ import javax.annotation.PostConstruct;
 
 @SpringBootApplication(exclude = KafkaAutoConfiguration.class)
 @EnableKafka
-//@EnableKafkaStreams
+@EnableKafkaStreams
 public class PartnerSpringApplication {
 
     public static void main(String[] args) {

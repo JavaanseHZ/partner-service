@@ -37,6 +37,7 @@ dependencies {
     compile('org.apache.avro:avro:1.8.2')
     compile('org.apache.kafka:kafka-streams')
     compile('io.confluent:kafka-avro-serializer:5.0.0')
+    compile('io.confluent:kafka-streams-avro-serde:5.0.0')
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
